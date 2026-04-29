@@ -1,14 +1,19 @@
 class Tank {
   float x, y, w, h, speed, health;
-  float baseSpeed = 8.0; // Your normal speed
-  int boostTimer = 0;    // Tracks when the boost should end
+  float baseSpeed = 8.0;
+  int boostTimer = 0;
+  int ammo; // New ammo variable
   char idir;
   PImage iTankW, iTankA, iTankS, iTankD, bombImg, heartImg;
 
   Tank() {
-    x = 250; y = 250; w = 80; h = 80; 
-    speed = baseSpeed; 
-    health = 75.0; 
+    x = 250;
+    y = 250;
+    w = 80;
+    h = 80;
+    speed = baseSpeed;
+    health = 75.0;
+    ammo = 20; // Start with 20 ammo
     idir = 'w';
     iTankW = loadImage("tankW.png");
     iTankA = loadImage("tankA.png");
@@ -19,7 +24,7 @@ class Tank {
   }
 
   void display() {
-    checkBoost(); // Check if the speed boost has expired
+    checkBoost();
     imageMode(CENTER);
     if (idir == 'w') image(iTankW, x, y, w, h);
     else if (idir == 'a') image(iTankA, x, y, w, h);
@@ -38,16 +43,21 @@ class Tank {
   }
 
   void boostSpeed() {
-    speed = baseSpeed + 10;      // Increase speed by 10
-    boostTimer = millis() + 5000; // Set end time to 5 seconds (5000ms) from now
+    speed = baseSpeed + 10;
+    boostTimer = millis() + 5000;
   }
 
   void checkBoost() {
     if (millis() > boostTimer) {
-      speed = baseSpeed; // Reset to normal speed after 5 seconds
+      speed = baseSpeed;
     }
   }
 
-  boolean hitBomb(Bomb b) { return dist(x, y, b.x, b.y) < (w/2 + b.w/2 - 10); }
-  boolean hitHeart(Heart hrt) { return dist(x, y, hrt.x, hrt.y) < (w/2 + hrt.w/2); }
+  boolean hitBomb(Bomb b) {
+    return dist(x, y, b.x, b.y) < (w/2 + b.w/2 - 10);
+  }
+
+  boolean hitHeart(Heart hrt) {
+    return dist(x, y, hrt.x, hrt.y) < (w/2 + hrt.w/2);
+  }
 }
